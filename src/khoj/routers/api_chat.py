@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 from urllib.parse import unquote
 
 from asgiref.sync import sync_to_async
+from django.db import close_old_connections
 from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket
 from fastapi.requests import Request
 from fastapi.responses import Response, StreamingResponse
@@ -620,6 +621,7 @@ async def websocket_endpoint(
             await conversation.arefresh_from_db()
 
         except WebSocketDisconnect:
+            await sync_to_async(close_old_connections)()
             logger.debug(f"User {user} disconnected web socket")
             break
 

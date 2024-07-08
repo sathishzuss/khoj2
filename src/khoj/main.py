@@ -205,7 +205,8 @@ def set_state(args):
     state.verbose = args.verbose
     state.host = args.host
     state.port = args.port
-    state.anonymous_mode = args.anonymous_mode
+    # state.anonymous_mode = args.anonymous_mode
+    state.anonymous_mode = True
     state.khoj_version = version("khoj-assistant")
     state.chat_on_gpu = args.chat_on_gpu
 

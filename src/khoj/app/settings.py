@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+from django.db import connection
+
 from khoj.utils.helpers import in_debug_mode, is_env_var_true
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -121,10 +123,37 @@ DATABASES = {
         "USER": os.getenv("POSTGRES_USER", "postgres"),
         "NAME": os.getenv("POSTGRES_DB", "khoj"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
-        "CONN_MAX_AGE": 0,
+        "CONN_MAX_AGE": None,
         "CONN_HEALTH_CHECKS": True,
+        # "DISABLE_SERVER_SIDE_CURSORS": True,,
     }
 }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "django_queries.log",  # Choose a file name and path
+        },
+    },
+    "loggers": {
+        "django.db.backends": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+            "formatter": "verbose",
+        },
+    },
+}
+
+connection.force_debug_cursor = True
 
 # User Settings
 AUTH_USER_MODEL = "database.KhojUser"
