@@ -55,7 +55,7 @@ services:
       # Proceed with caution, especially if you are using anonymous mode.
       # ---
       # - KHOJ_NO_HTTPS=True
-      # - KHOJ_DOMAIN=192.168.0.104
+      - KHOJ_DOMAIN=khoj2-production.up.railway.app
       # - KHOJ_DOMAIN=khoj.example.com
     command: --host="0.0.0.0" --port=42110 -vv --anonymous-mode --non-interactive
 
